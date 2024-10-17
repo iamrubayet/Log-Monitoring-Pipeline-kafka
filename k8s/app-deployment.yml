@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-app
+  template:
+    metadata:
+      labels:
+        app: kafka-app
+    spec:
+      containers:
+        - name: kafka-app
+          image: <your-dockerhub-username>/kafka-app:latest
+          env:
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: "kafka:9092"
+            - name: POSTGRES_HOST
+              value: "postgres"
+          envFrom:
+            - secretRef:
+                name: postgres-secret
